@@ -11,6 +11,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private float movementSpeed;
 
+    [SerializeField]
+    private float slopeForce;
+    [SerializeField]
+    private float slopeForceRayLength;
+
     private CharacterController charController;
 
     [SerializeField]
@@ -48,7 +53,25 @@ public class PlayerMove : MonoBehaviour
         // perfoming a movement
         charController.SimpleMove(Vector3.ClampMagnitude(forwardMovement + rightMovement, 1.0f) * movementSpeed);
 
-        JumpInput();
+        // применение дополнительной силы на склонах
+        if ((vertInput != 0 || horizInput != 0) && OnSlope())
+            charController.Move(Vector3.down * charController.height / 2 * slopeForce * Time.deltaTime);
+
+
+        JumpInput();        
+    }
+
+    private bool OnSlope()
+    {
+        if (isJumping)
+            return false;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, charController.height / 2 * slopeForceRayLength))
+            if (hit.normal != Vector3.up)
+                return true ;
+
+        return false;
     }
 
     private void JumpInput()
