@@ -8,7 +8,14 @@ public class PlayerMove : MonoBehaviour
     private string horizontalInputName;
     [SerializeField]
     private string verticalInputName;
+
     [SerializeField]
+    private float walkSpeed, runSpeed;
+    [SerializeField]
+    private float runBuildUpSpeed;
+    [SerializeField]
+    private KeyCode runKey;
+    
     private float movementSpeed;
 
     [SerializeField]
@@ -57,8 +64,16 @@ public class PlayerMove : MonoBehaviour
         if ((vertInput != 0 || horizInput != 0) && OnSlope())
             charController.Move(Vector3.down * charController.height / 2 * slopeForce * Time.deltaTime);
 
-
+        SetMovementSpeed();
         JumpInput();        
+    }
+
+    private void SetMovementSpeed()
+    {
+        if (Input.GetKey(runKey))
+            movementSpeed = Mathf.Lerp(movementSpeed, runSpeed, Time.deltaTime * runBuildUpSpeed);
+        else
+            movementSpeed = Mathf.Lerp(movementSpeed, walkSpeed, Time.deltaTime * runBuildUpSpeed);
     }
 
     private bool OnSlope()

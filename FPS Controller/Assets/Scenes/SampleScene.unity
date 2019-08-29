@@ -2323,8 +2323,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalInputName: Horizontal
   verticalInputName: Vertical
-  movementSpeed: 6
-  slopeForce: 3
+  walkSpeed: 6
+  runSpeed: 12
+  runBuildUpSpeed: 2
+  runKey: 304
+  slopeForce: 5
   slopeForceRayLength: 1.5
   jumpFallOff:
     serializedVersion: 2
